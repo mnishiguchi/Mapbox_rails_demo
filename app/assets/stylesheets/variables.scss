@@ -45,8 +45,8 @@ $root-font-family: 'Lato', "Helvetica Neue", Arial, sans-serif;
 $root-font-size: 18px;
 $root-line-height: 1.6;
 
-$header-color: rgb(6,29,47);
-$footer-color: darken(rgb(6,29,47), 5%);
+$header-color: $tumblr;
+$footer-color: $tumblr;
 
 $body-color: $gray-5;
 $body-bg: white;

@@ -6,13 +6,18 @@ html
 
     title= full_title(yield(:title))
 
-    / Mapbox styles
-    link href="https://api.mapbox.com/mapbox-gl-js/v0.23.0/mapbox-gl.css" rel="stylesheet" /
-    link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.3.0/mapbox-gl-geocoder.css" rel="stylesheet" /
-
     = stylesheet_link_tag 'application', media: 'all', \
                                             'data-turbolinks-track' => true  
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
+
+    / Mapbox styles
+    script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.26.0/mapbox-gl.js" 
+    link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.26.0/mapbox-gl.css" rel="stylesheet" /
+
+    / Mapbox javascripts
+    script src="https://api.mapbox.com/mapbox-gl-js/v0.23.0/mapbox-gl.js" 
+    script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v2.2.0/mapbox-gl-directions.js" 
+
     = csrf_meta_tags
     /[if lt IE 9]
       script [src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"]
@@ -23,8 +28,7 @@ html
       = render 'layouts/site_header'
       = render 'layouts/flash_message'
 
-    main
-      = yield
+    main = yield
 
     = render 'layouts/site_footer'
     = render 'layouts/debug_box'

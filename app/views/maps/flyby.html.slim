@@ -1,4 +1,5 @@
-#map style=("width: 70%; height: 100%;") 
+#map style=("width: 100vw; height: 100vh;") 
+
 #features
   a.close-button href="/" 
     i.fa.fa-close
@@ -66,7 +67,7 @@ script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v1.3.
 
 javascript:
 
-  $(document).on("turbolinks:load", function(){
+  (function(){
 
     mapboxgl = window.mapboxgl
     mapboxgl.accessToken = 'pk.eyJ1IjoicG1pbGxlcmsiLCJhIjoiY2lyM3VjMzNsMDFkZHR4bHdxOWs1amt1MiJ9.nc1fPKTYXlgC1zVoYS2Oag';
@@ -205,4 +206,4 @@ javascript:
           var bounds = element.getBoundingClientRect();
           return bounds.top < window.innerHeight && bounds.bottom > 0;
       }
-  }
+  }()

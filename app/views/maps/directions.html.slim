@@ -1,6 +1,4 @@
-#map style=("height: 100%; width:100%;") 
-a.close-button href="/" 
-  i.fa.fa-close
+#map style=("width: 100vw; height: 100vh;") 
   
 / Mapbox javascripts
 script src="https://api.mapbox.com/mapbox-gl-js/v0.23.0/mapbox-gl.js" 
@@ -8,17 +6,17 @@ script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v2.
   
 javascript:
 
-    $(document).on("turbolinks:load", function(){
+    (function(){
 
         mapboxgl = window.mapboxgl
         mapboxgl.accessToken = 'pk.eyJ1IjoicG1pbGxlcmsiLCJhIjoiY2lyM3VjMzNsMDFkZHR4bHdxOWs1amt1MiJ9.nc1fPKTYXlgC1zVoYS2Oag';
 
-      
         var map = new mapboxgl.Map({
             container: 'map',
-            style:     'mapbox://styles/mapbox/light-v9',
-            center:    [-77.356746, 38.957575],
-            zoom:      12
-        })
-        map.addControl(new mapboxgl.Directions())
-    })
+            style: 'mapbox://styles/mapbox/light-v9',
+            center: [-77.356746, 38.957575],
+            zoom: 12
+        });
+
+        map.addControl(new mapboxgl.Directions());
+    })()

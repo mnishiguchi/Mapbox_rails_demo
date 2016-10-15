@@ -1,0 +1,17 @@
+.site_header
+  .container
+    a#logo href="#{root_path}"
+      | A
+      span.shrink partment
+      | SH
+      span.shrink owoff
+  .container
+    ul.nav.nav-tabs
+      li = link_to "clickable", clickable_path
+      li = link_to "data_binding", data_binding_path
+      li = link_to "directions", directions_path
+      li = link_to "flyby", flyby_path
+      li = link_to "geocoder", geocoder_path
+      li = link_to "languages", languages_path
+      li = link_to "navigation_controls", navigation_controls_path
+      li = link_to "restriction_pane", restriction_pane_path

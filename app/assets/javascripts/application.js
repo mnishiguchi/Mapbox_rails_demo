@@ -17,3 +17,5 @@
 //= require bootstrap-sprockets
 //= require data
 //= require_tree .
+
+var app = app || {};

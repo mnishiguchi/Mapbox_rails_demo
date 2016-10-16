@@ -1,17 +1,10 @@
-.site_header
-  .container
-    a#logo href="#{root_path}"
-      | A
-      span.shrink partment
-      | SH
-      span.shrink owoff
-  .container
-    ul.nav.nav-tabs
-      li = link_to "clickable", clickable_path
-      li = link_to "data_binding", data_binding_path
-      li = link_to "directions", directions_path
-      li = link_to "flyby", flyby_path
-      li = link_to "geocoder", geocoder_path
-      li = link_to "languages", languages_path
-      li = link_to "navigation_controls", navigation_controls_path
-      li = link_to "restriction_pane", restriction_pane_path
+.site_header (style="padding: 0 2rem;")
+  ul.nav.nav-tabs
+    li = link_to "Clickable", clickable_path
+    li = link_to "Data binding", data_binding_path
+    li = link_to "Directions", directions_path
+    li = link_to "Fly by", flyby_path
+    li = link_to "Geocoder", geocoder_path
+    li = link_to "Languages", languages_path
+    li = link_to "Navigation controls", navigation_controls_path
+    li = link_to "Restriction pane", restriction_pane_path

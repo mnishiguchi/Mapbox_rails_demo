@@ -13,6 +13,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 gem 'mapbox-rails'
 
+gem 'browserify-rails'
+
 gem 'sass-rails', '~> 5.0'
 # gem 'simple_form'
 gem 'slim-rails'

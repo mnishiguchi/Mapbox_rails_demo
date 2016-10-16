@@ -9,10 +9,11 @@ const navigation_controls = require("./maps/navigation_controls");
 const restriction_pane    = require("./maps/restriction_pane");
 
 // Create our App object.
-window.App      = window.App      || {};
-window.App.maps = window.App.maps || {};
+window.App = window.App || {};
 
 // Expose our code for Mapbox.
+window.App.maps = window.App.maps || {};
+
 window.App.maps.clickable           = clickable;
 window.App.maps.data_binding        = data_binding;
 window.App.maps.directions          = directions;

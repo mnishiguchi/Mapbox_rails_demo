@@ -2,35 +2,60 @@ module.exports = function() {
 
     console.log('hello from clickable');
 
-    const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v9',
-        center: [-98, 38.88],
-        minZoom: 2,
-        zoom: 3
-    });
+    // Initiate the loading of a map and a popup.
+    const map    = loadMap();
+    const popup  = loadPopup();
+    const canvas = map.getCanvasContainer();
 
-    // Disable default box zooming.
-    map.boxZoom.disable();
+    // Initial state.
+    let state = {
+        startPosition:   null,
+        currentPosition: null,
+        box:             null
+    }
 
-    // Create a popup, but don't add it to the map yet.
-    const popup = new mapboxgl.Popup({
-        closeButton: false
-    });
 
-    map.on('load', function() {
-        var canvas = map.getCanvasContainer();
+    /**
+     * Loads a map from Mapbox GL API.
+     * @return {mapboxgl.Map} A new map object.
+     */
+    function loadMap() {
 
-        // Variable to hold the starting xy coordinates
-        // when `mousedown` occured.
-        var start;
+        let map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v9',
+            center: [-98, 38.88],
+            minZoom: 2,
+            zoom: 3
+        });
 
-        // Variable to hold the current xy coordinates
-        // when `mousemove` or `mouseup` occurs.
-        var current;
+        // Disable default box zooming.
+        map.boxZoom.disable();
 
-        // Variable for the draw box element.
-        var box;
+        return map;
+    }
+
+
+    /**
+     * Loads a popup object from Mapbox GL API.
+     * @return {mapboxgl.Popup} A new popup object.
+     */
+    function loadPopup() {
+
+        let popup =  new mapboxgl.Popup({
+            closeButton: false
+        });
+
+        return popup;
+    }
+
+
+    /**
+     * Decorates the specified map objects.
+     * @param  {mapboxgl.Map}
+     * @return {Null}
+     */
+    function decorateMap(map) {
 
         // Add the source to query. In this example we're using
         // county polygons uploaded as vector tiles
@@ -62,85 +87,45 @@ module.exports = function() {
             },
             "filter": ["in", "FIPS", ""]
         }, 'place-city-sm'); // Place polygon under these labels.
+    }
 
-        // Set `true` to dispatch the event before other functions
-        // call it. This is necessary for disabling the default map
-        // dragging behaviour.
-        canvas.addEventListener('mousedown', mouseDown, true);
 
-        // Return the xy coordinates of the mouse position
-        function mousePos(e) {
-            var rect = canvas.getBoundingClientRect();
-            return new mapboxgl.Point(
-                e.clientX - rect.left - canvas.clientLeft,
-                e.clientY - rect.top - canvas.clientTop
-            );
-        }
+    // We start interacting with users moving mouse as soon as map is loaded.
+    map.on('load', () => {
 
-        function mouseDown(e) {
+        decorateMap(map);
+
+        // Set `true` to dispatch the event before other functions call it.
+        // This is necessary for disabling the default map dragging behavior.
+        canvas.addEventListener('mousedown', (event) => {
+
             // Continue the rest of the function if the shiftkey is pressed.
-            if (!(e.button === 0)) return;
+            if (!(event.button === 0)) {
+                return;
+            }
 
             // Disable default drag zooming when the shift key is held down.
             map.dragPan.disable();
 
-            // Call functions for the following events
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
-            document.addEventListener('keydown', onKeyDown);
+            listenForMouse();
+            captureStartPosition(event);
 
-            // Capture the first xy coordinates
-            start = mousePos(e);
-        }
+        }, true);
 
-        function onMouseMove(e) {
-            // Capture the ongoing xy coordinates
-            current = mousePos(e);
 
-            // Append the box element if it doesnt exist
-            if (!box) {
-                box = document.createElement('div');
-                box.classList.add('boxdraw');
-                canvas.appendChild(box);
-            }
+        /**
+         * @param  {Array<mapboxgl.Point>} line An array of two points.
+         */
+        function captureFinishPosition(line) {
 
-            var minX = Math.min(start.x, current.x),
-                maxX = Math.max(start.x, current.x),
-                minY = Math.min(start.y, current.y),
-                maxY = Math.max(start.y, current.y);
+            unlistenForMouse();
+            removeBox();
 
-            // Adjust width and xy position of the box element ongoing
-            var pos = 'translate(' + minX + 'px,' + minY + 'px)';
-            box.style.transform = pos;
-            box.style.WebkitTransform = pos;
-            box.style.width = maxX - minX + 'px';
-            box.style.height = maxY - minY + 'px';
-        }
-
-        function onMouseUp(e) {
-            // Capture xy coordinates
-            finish([start, mousePos(e)]);
-        }
-
-        function onKeyDown(e) {
-            // If the ESC key is pressed
-            if (e.keyCode === 27) finish();
-        }
-
-        function finish(bbox) {
-            // Remove these events now that finish has been called.
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('keydown', onKeyDown);
-            document.removeEventListener('mouseup', onMouseUp);
-
-            if (box) {
-                box.parentNode.removeChild(box);
-                box = null;
-            }
-
-            // If bbox exists. use this value as the argument for `queryRenderedFeatures`
-            if (bbox) {
-                var features = map.queryRenderedFeatures(bbox, { layers: ['counties'] });
+            // If line exists. use this value as the argument for `queryRenderedFeatures`
+            if (line) {
+                const features = map.queryRenderedFeatures(line, {
+                  layers: ['counties']
+                });
 
                 if (features.length >= 1000) {
                     return window.alert('Select a smaller number of features');
@@ -149,7 +134,7 @@ module.exports = function() {
                 // Run through the selected features and set a filter
                 // to match features with unique FIPS codes to activate
                 // the `counties-highlighted` layer.
-                var filter = features.reduce(function(memo, feature) {
+                const filter = features.reduce((memo, feature) => {
                     memo.push(feature.properties.FIPS);
                     return memo;
                 }, ['in', 'FIPS']);
@@ -160,21 +145,112 @@ module.exports = function() {
             map.dragPan.enable();
         }
 
-        map.on('mousemove', function(e) {
-            var features = map.queryRenderedFeatures(e.point, { layers: ['counties-highlighted'] });
-            // Change the cursor style as a UI indicator.
-            map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
 
-            if (!features.length) {
-                popup.remove();
-                return;
+        /**
+         * Starts listening mouse motion.
+         */
+        function listenForMouse() {
+
+            document.addEventListener('keydown', (event) => {
+              // If the ESC key is pressed.
+              if (event.keyCode === 27) {
+                captureFinishPosition();
+              }
+            });
+
+            document.addEventListener('mousemove', (event) => {
+                captureCurrentPosition(event);
+                createBox();
+                updateBoxPosition();
+            });
+
+            document.addEventListener('mouseup', (event) => {
+                let line = [ state.startPosition, mousePosition(event) ];
+                captureFinishPosition(line);
+            });
+        }
+
+
+        /**
+         * Unregister eventlisteners for mouse motion.
+         */
+        function unlistenForMouse() {
+            document.removeEventListener('keydown',   (event) => {});
+            document.removeEventListener('mousemove', (event) => {});
+            document.removeEventListener('mouseup',   (event) => {});
+        }
+
+
+        /**
+         * Appends the box element if it doesnt exist.
+         */
+        function createBox() {
+            if (!state.box) {
+                state.box = document.createElement('div');
+                state.box.classList.add('boxdraw');
+                canvas.appendChild(state.box);
             }
+        }
 
-            var feature = features[0];
 
-            popup.setLngLat(e.lngLat)
-                .setText(feature.properties.COUNTY)
-                .addTo(map);
-        });
+        /**
+         * Removes the box div element and clears the reference to it.
+         */
+        function removeBox() {
+            if (state.box) {
+                state.box.parentNode.removeChild(state.box);
+                state.box = null;
+            }
+        }
+
+
+        /**
+         * @param  {Event} event
+         * @return {mapboxgl.Point} The xy coordinates of the mouse position.
+         */
+        function captureStartPosition(event) {
+            state.startPosition = mousePosition(event);
+        }
+
+
+        /**
+         * @param  {Event} event
+         * @return {mapboxgl.Point} The xy coordinates of the mouse position.
+         */
+        function captureCurrentPosition(event) {
+            state.currentPosition = mousePosition(event);
+        }
+
+
+        /**
+         * @param  {Event} event
+         * @return {mapboxgl.Point} The xy coordinates of the mouse position.
+         */
+        function mousePosition(event) {
+
+            const rect = canvas.getBoundingClientRect();
+
+            return new mapboxgl.Point(
+                event.clientX - rect.left - canvas.clientLeft,
+                event.clientY - rect.top - canvas.clientTop
+            );
+        }
+
+
+        /**
+         * Adjusts width and xy position of the box element ongoing.
+         */
+        function updateBoxPosition() {
+            let minX = Math.min(state.startPosition.x, state.currentPosition.x),
+                maxX = Math.max(state.startPosition.x, state.currentPosition.x),
+                minY = Math.min(state.startPosition.y, state.currentPosition.y),
+                maxY = Math.max(state.startPosition.y, state.currentPosition.y);
+
+            let pos = 'translate(' + minX + 'px,' + minY + 'px)';
+            state.box.style.transform       = pos;
+            state.box.style.WebkitTransform = pos;
+            state.box.style.width           = maxX - minX + 'px';
+            state.box.style.height          = maxY - minY + 'px';
+        }
     });
 }

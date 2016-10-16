@@ -6,15 +6,12 @@ gem 'puma', '~> 3.0'
 
 gem 'awesome_print'
 gem 'bootstrap-sass'
+gem 'browserify-rails'
 # gem 'coffee-rails', '~> 4.2'
 gem 'faker'
 gem 'font-awesome-rails'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
-gem 'mapbox-rails'
-
-gem 'browserify-rails'
-
 gem 'sass-rails', '~> 5.0'
 # gem 'simple_form'
 gem 'slim-rails'
@@ -31,15 +28,15 @@ group :development, :test do
 end
 
 group :development do
-  gem 'annotate'
+  # gem 'annotate'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'bullet'
-  gem 'guard'
-  gem 'guard-minitest'
-  gem 'letter_opener_web'
+  # gem 'bullet'
+  # gem 'guard'
+  # gem 'guard-minitest'
+  # gem 'letter_opener_web'
   gem 'listen', '~> 3.0.5'
-  gem 'rails-erd'
+  # gem 'rails-erd'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console'

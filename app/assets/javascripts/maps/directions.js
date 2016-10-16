@@ -2,7 +2,7 @@ module.exports = function() {
 
   console.log('hello from directions');
 
-  var map = mapboxgl.Map({
+  const map = mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/light-v9',
       center: [-77.356746, 38.957575],

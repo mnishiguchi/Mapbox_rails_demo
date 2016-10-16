@@ -2,7 +2,7 @@ module.exports = function() {
 
     console.log('hello from data_binding');
 
-    var map = new mapboxgl.Map({
+    const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v9',
         center: [-98, 38.88],
@@ -10,10 +10,10 @@ module.exports = function() {
         zoom: 4
     });
 
-    var overlay = document.getElementById('map-overlay');
+    const overlay = document.getElementById('map-overlay');
 
     // Create a popup, but don't add it to the map yet.
-    var popup = new mapboxgl.Popup({
+    const popup = new mapboxgl.Popup({
         closeButton: false
     });
 

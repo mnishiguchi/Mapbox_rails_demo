@@ -38,11 +38,11 @@ module ApplicationHelper
   end
 
   def current_user
-    current_identity&.user
+    current_identity && current_identity.user
   end
 
   def current_backend_user
-    current_identity&.backend_user
+    current_identity && current_identity.backend_user
   end
 
   def link_to_user_page(text, options={})

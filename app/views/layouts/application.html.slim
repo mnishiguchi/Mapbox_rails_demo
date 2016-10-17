@@ -7,31 +7,14 @@ html
     title= full_title(yield(:title))
 
     = stylesheet_link_tag 'application', media: 'all', \
-                                            'data-turbolinks-track' => true  
+                                            'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
 
     = csrf_meta_tags
     /[if lt IE 9]
       script [src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"]
-      
+
     body
-    
-      collapse.navbar-collapse
-        ul.nav.navbar-nav.navbar-right
-          li.dropdown(style="position:absolute; top: 1rem; right: 1rem; z-index: 10;")
-            a.dropdown-toggle.btn.btn-default[href="#" id="dropdownMenu1" data-toggle="dropdown"
-              role="button" aria-haspopup="true" aria-expanded="false" 
-              style="height: 45px; width: 45px;"] 
-              span.caret
-            ul.dropdown-menu[aria-labelledby="dropdownMenu1"]
-              li = link_to "Clickable", clickable_path
-              li = link_to "Data binding", data_binding_path
-              li = link_to "Directions", directions_path
-              li = link_to "Fly by", flyby_path
-              li = link_to "Geocoder", geocoder_path
-              li = link_to "Languages", languages_path
-              li = link_to "Navigation controls", navigation_controls_path
-              li = link_to "Restriction pane", restriction_pane_path
-    
+
+      header = render "layouts/menu_button_toggle"
       main = yield
-    

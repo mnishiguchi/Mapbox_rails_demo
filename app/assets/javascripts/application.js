@@ -4,9 +4,10 @@
 //= require mapbox-gl
 //= require mapbox-gl-directions
 //= require mapbox-gl-geocoder
-//= require data
-//= require_tree .
 //= require turbolinks
+//= require location_data
+//= require_self
 
-/* NOTE: This is for importing all the modules that are processed by Browserify. */
+
+// Entry point of Browserify.
 require("./main");

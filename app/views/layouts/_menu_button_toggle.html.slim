@@ -1,0 +1,55 @@
+nav.menu_button_toggle
+  a.btn.btn-default
+    span.caret
+
+  ul.dropdown_menu
+    li = link_to "Clickable", clickable_path
+    li = link_to "Data binding", data_binding_path
+    li = link_to "Directions", directions_path
+    li = link_to "Fly by", flyby_path
+    li = link_to "Geocoder", geocoder_path
+    li = link_to "Languages", languages_path
+    li = link_to "Navigation controls", navigation_controls_path
+    li = link_to "Restriction pane", restriction_pane_path
+
+javascript:
+  $(".menu_button_toggle").on("click", function() {
+    $(".dropdown_menu").toggle();
+  })
+
+css:
+
+  .menu_button_toggle {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+  }
+  .menu_button_toggle > a {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+    height: 45px;
+    width: 45px;
+    opacity: 0.7;
+  }
+
+  .menu_button_toggle .dropdown_menu {
+    position: absolute;
+    top: 6rem;
+    right: 0.5rem;
+    z-index: 10;
+    background: black;
+    opacity: 0.6;
+    padding: 1rem;
+    display: none;
+  }
+
+  .menu_button_toggle .dropdown_menu li {
+    list-style: none;
+  }
+
+  .menu_button_toggle .dropdown_menu li a {
+    color: white;
+  }

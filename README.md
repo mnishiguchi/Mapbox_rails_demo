@@ -4,7 +4,45 @@
 - [paulkmiller/LayoutDemoAlt at gh-pages](https://github.com/paulkmiller/LayoutDemoAlt/tree/gh-pages)
 - [http://layoutdemoalt.herokuapp.com/](http://layoutdemoalt.herokuapp.com/)
 
+
+
 ---
+
+
+
+## Get started
+
+#### Clone this app
+
+```
+git clone git@github.com:mnishiguchi/mapbox_rails_demo.git
+```
+
+#### Setup Ruby
+- install ruby
+
+#### Setup Rails
+
+```
+bundle install
+rails db:create db:migrate
+```
+
+#### Setup npm
+
+```
+npm install
+```
+
+#### Start local server
+
+```
+rails s
+```
+
+
+---
+
 
 ## Mapbox resources
 - [Why would you use OpenStreetMap if there is Google Maps?](http://geoawesomeness.com/why-would-you-use-openstreetmap-if-there-is-google-maps/)
@@ -25,7 +63,11 @@
 - every change you make to Google Maps… will be owned by Google
 - Google is an advertising company
 
+
+
 ---
+
+
 
 ## Browserify on Rails resources
 
@@ -73,7 +115,11 @@ or
 $ npm install browserify browserify-incremental babelify babel-preset-es2015 --save
 ```
 
+
+
 ---
+
+
 
 ## Testing JS with [Teaspoon](https://github.com/modeset/teaspoon)
 
